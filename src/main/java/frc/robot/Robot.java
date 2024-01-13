@@ -4,143 +4,43 @@
 
 package frc.robot;
 
+import com.revrobotics.CANSparkFlex;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import com.revrobotics.CANSparkFlex;
-import com.revrobotics.CANSparkLowLevel;
-
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the
- * name of this class or
- * the package after creating this project, you must also update the
- * build.gradle file in the
- * project.
- */
 public class Robot extends TimedRobot {
-
-  /**
-   * This function is run when the robot is first started up and should be used
-   * for any
-   * initialization code.
-   */
-
-  // XboxController Object - will be deleted once proper object is ready in the
-  // proper place
+  CANSparkFlex shooter_21 = new CANSparkFlex(21, MotorType.kBrushless);
+  CANSparkFlex shooter_22 = new CANSparkFlex(22, MotorType.kBrushless);
+  CANSparkFlex hopper_23 = new CANSparkFlex(23, MotorType.kBrushless);
+  CANSparkFlex hopper_24 = new CANSparkFlex(23, MotorType.kBrushless);
   XboxController CONTROLLER = new XboxController(0);
 
-  CANSparkFlex m11 = new CANSparkFlex(11, CANSparkLowLevel.MotorType.kBrushless);
-  CANSparkFlex m12 = new CANSparkFlex(12, CANSparkLowLevel.MotorType.kBrushless);
-  CANSparkFlex m13 = new CANSparkFlex(13, CANSparkLowLevel.MotorType.kBrushless);
-  CANSparkFlex m14 = new CANSparkFlex(14, CANSparkLowLevel.MotorType.kBrushless);
+  double shooterSpeed = 60;
+  double hopperSpeed = 20;
 
   @Override
   public void robotInit() {
+    SmartDashboard.putNumber("ShooterSpeed", shooterSpeed);
+    SmartDashboard.putNumber("HopperSpeed", hopperSpeed);
   }
 
-  /**
-   * This function is called every 20 ms, no matter the mode. Use this for items
-   * like diagnostics
-   * that you want ran during disabled, autonomous, teleoperated and test.
-   *
-   * <p>
-   * This runs after the mode specific periodic functions, but before LiveWindow
-   * and
-   * SmartDashboard integrated updating.
-   */
-  @Override
-  public void robotPeriodic() {
-  }
-
-  /**
-   * This autonomous (along with the chooser code above) shows how to select
-   * between different
-   * autonomous modes using the dashboard. The sendable chooser code works with
-   * the Java
-   * SmartDashboard. If you prefer the LabVIEW Dashboard, remove all of the
-   * chooser code and
-   * uncomment the getString line to get the auto name from the text box below the
-   * Gyro
-   *
-   * <p>
-   * You can add additional auto modes by adding additional comparisons to the
-   * switch structure
-   * below with additional strings. If using the SendableChooser make sure to add
-   * them to the
-   * chooser code above as well.
-   */
-  @Override
-  public void autonomousInit() {
-
-  }
-
-  /** This function is called periodically during autonomous. */
-  @Override
-  public void autonomousPeriodic() {
-
-  }
-
-  /** This function is called once when teleop is enabled. */
-  @Override
-  public void teleopInit() {
-  }
-
-  /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    shooterSpeed = SmartDashboard.getNumber("ShooterSpeed", shooterSpeed);
+    hopperSpeed = SmartDashboard.getNumber("HopperSpeed", hopperSpeed);
     if (CONTROLLER.getAButton()) {
-      if (Math.abs(CONTROLLER.getRightY()) > 0.1) {
-        m11.set(CONTROLLER.getRightY());
-        m12.set(-CONTROLLER.getRightY());
-      } else {
-        m11.set(0);
-        m12.set(0);
-      }
-
-      if (Math.abs(CONTROLLER.getLeftY()) > 0.1) {
-        m13.set(CONTROLLER.getLeftY());
-        m14.set(-CONTROLLER.getLeftY());
-      } else {
-        m13.set(0);
-        m14.set(0);
-      }
+      shooter_21.setVoltage(shooterSpeed / 100 * 12);
+      shooter_22.setVoltage(shooterSpeed / 100 * 12);
+      hopper_23.setVoltage(hopperSpeed / 100 * 12);
+      hopper_24.setVoltage(hopperSpeed / 100 * 12);
+    } else {
+      shooter_21.setVoltage(0);
+      shooter_22.setVoltage(0);
+      hopper_23.setVoltage(0);
+      hopper_24.setVoltage(0);
     }
-
-    if (CONTROLLER.getBButton()) {
-      
-    }
-
-  }
-
-  /** This function is called once when the robot is disabled. */
-  @Override
-  public void disabledInit() {
-  }
-
-  /** This function is called periodically when disabled. */
-  @Override
-  public void disabledPeriodic() {
-  }
-
-  /** This function is called once when test mode is enabled. */
-  @Override
-  public void testInit() {
-  }
-
-  /** This function is called periodically during test mode. */
-  @Override
-  public void testPeriodic() {
-  }
-
-  /** This function is called once when the robot is first started up. */
-  @Override
-  public void simulationInit() {
-  }
-
-  /** This function is called periodically whilst in simulation. */
-  @Override
-  public void simulationPeriodic() {
   }
 }
