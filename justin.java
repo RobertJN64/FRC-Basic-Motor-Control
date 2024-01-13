@@ -15,36 +15,38 @@ public class Robot extends TimedRobot {
   CANSparkFlex shooter_21 = new CANSparkFlex(21, MotorType.kBrushless);
   CANSparkFlex shooter_22 = new CANSparkFlex(22, MotorType.kBrushless);
   CANSparkFlex hopper_23 = new CANSparkFlex(23, MotorType.kBrushless);
-  CANSparkFlex hopper_24 = new CANSparkFlex(24, MotorType.kBrushless);
+  //CANSparkFlex hopper_24 = new CANSparkFlex(24, MotorType.kBrushless);
   XboxController CONTROLLER = new XboxController(0);
 
   double shooterSpeed = 60;
-  double hopperSpeed = 20;
+  double hopperSpeed = 50;
 
   @Override
   public void robotInit() {
-    SmartDashboard.putNumber("ShooterSpeed", shooterSpeed);
+    SmartDashboard.putNumber("ShooterSpeed_SET", shooterSpeed);
     SmartDashboard.putNumber("HopperSpeed", hopperSpeed);
+    SmartDashboard.putNumber("ShooterSpeed_SENSE", 0);
   }
 
   @Override
   public void teleopPeriodic() {
-    shooterSpeed = SmartDashboard.getNumber("ShooterSpeed", shooterSpeed);
+    shooterSpeed = SmartDashboard.getNumber("ShooterSpeed_SET", shooterSpeed);
     hopperSpeed = SmartDashboard.getNumber("HopperSpeed", hopperSpeed);
+    SmartDashboard.putNumber("ShooterSpeed_SENSE", shooter_21.getEncoder().getVelocity());
     if (CONTROLLER.getAButton()) {
-      shooter_21.setVoltage(-shooterSpeed / 100 * 12);
-      shooter_22.setVoltage(shooterSpeed / 100 * 12);
+      shooter_21.setVoltage(shooterSpeed / 100 * 12);
+      shooter_22.setVoltage(-shooterSpeed / 100 * 12);
     } else {
       shooter_21.setVoltage(0);
       shooter_22.setVoltage(0);
     }
 
     if (CONTROLLER.getBButton()) {
-      hopper_23.setVoltage(-hopperSpeed / 100 * 12);
-      hopper_24.setVoltage(hopperSpeed / 100 * 12);
+      hopper_23.setVoltage(hopperSpeed / 100 * 12);
+      //hopper_24.setVoltage(hopperSpeed / 100 * 12);
     } else {
       hopper_23.setVoltage(0);
-      hopper_24.setVoltage(0);
+      //hopper_24.setVoltage(0);
     }
   }
 }
