@@ -20,13 +20,16 @@ public class Robot extends TimedRobot {
   XboxController CONTROLLER = new XboxController(0);
 
   double shooterSpeed = 60;
+  double shooterSpeed_2 = 60;
   double hopperSpeed = 20;
 
   @Override
   public void robotInit() {
     SmartDashboard.putNumber("ShooterSpeed", shooterSpeed);
+    SmartDashboard.putNumber("ShooterSpeed_2", shooterSpeed_2);
     SmartDashboard.putNumber("HopperSpeed", hopperSpeed);
     SmartDashboard.putNumber("ShooterSpeed_SENSE", 0);
+    SmartDashboard.putNumber("ShooterSpeed_SENSE_2", 0);
 
     shooter_21.setIdleMode(IdleMode.kCoast);
     shooter_22.setIdleMode(IdleMode.kCoast);
@@ -37,11 +40,15 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     shooterSpeed = SmartDashboard.getNumber("ShooterSpeed", shooterSpeed);
+    shooterSpeed_2 = SmartDashboard.getNumber("ShooterSpeed_2", shooterSpeed_2);
     hopperSpeed = SmartDashboard.getNumber("HopperSpeed", hopperSpeed);
+    
     SmartDashboard.putNumber("ShooterSpeed_SENSE", -shooter_21.getEncoder().getVelocity());
+    SmartDashboard.putNumber("ShooterSpeed_SENSE_2", shooter_22.getEncoder().getVelocity());
+    
     if (CONTROLLER.getAButton()) {
       shooter_21.setVoltage(-shooterSpeed / 100 * 12);
-      shooter_22.setVoltage(shooterSpeed / 100 * 12);
+      shooter_22.setVoltage(shooterSpeed_2 / 100 * 12);
     } else {
       shooter_21.setVoltage(0);
       shooter_22.setVoltage(0);
