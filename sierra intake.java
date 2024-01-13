@@ -7,7 +7,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 
-import com.revrobotics.CANSparkFlex;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel;
 
 /**
@@ -31,10 +31,8 @@ public class Robot extends TimedRobot {
   // proper place
   XboxController CONTROLLER = new XboxController(0);
 
-  CANSparkFlex m11 = new CANSparkFlex(11, CANSparkLowLevel.MotorType.kBrushless);
-  CANSparkFlex m12 = new CANSparkFlex(12, CANSparkLowLevel.MotorType.kBrushless);
-  CANSparkFlex m13 = new CANSparkFlex(13, CANSparkLowLevel.MotorType.kBrushless);
-  CANSparkFlex m14 = new CANSparkFlex(14, CANSparkLowLevel.MotorType.kBrushless);
+  CANSparkMax m1 = new CANSparkMax(2, CANSparkLowLevel.MotorType.kBrushless);
+  CANSparkMax m2 = new CANSparkMax(4, CANSparkLowLevel.MotorType.kBrushless);
 
   @Override
   public void robotInit() {
@@ -92,23 +90,23 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     if (CONTROLLER.getAButton()) {
       if (Math.abs(CONTROLLER.getRightY()) > 0.1) {
-        m11.set(CONTROLLER.getRightY());
-        m12.set(-CONTROLLER.getRightY());
+        m1.set(CONTROLLER.getRightY());
       } else {
-        m11.set(0);
-        m12.set(0);
+        m1.set(0);
       }
 
       if (Math.abs(CONTROLLER.getLeftY()) > 0.1) {
-        m13.set(CONTROLLER.getLeftY());
-        m14.set(-CONTROLLER.getLeftY());
+        m2.set(CONTROLLER.getLeftY());
       } else {
-        m13.set(0);
-        m14.set(0);
+        m2.set(0);
       }
     }
 
     if (CONTROLLER.getBButton()) {
+      
+        m1.set(-0.75);
+      
+        m2.set(-0.5);
       
     }
 
