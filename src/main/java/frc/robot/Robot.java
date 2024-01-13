@@ -15,7 +15,7 @@ public class Robot extends TimedRobot {
   CANSparkFlex shooter_21 = new CANSparkFlex(21, MotorType.kBrushless);
   CANSparkFlex shooter_22 = new CANSparkFlex(22, MotorType.kBrushless);
   CANSparkFlex hopper_23 = new CANSparkFlex(23, MotorType.kBrushless);
-  CANSparkFlex hopper_24 = new CANSparkFlex(23, MotorType.kBrushless);
+  CANSparkFlex hopper_24 = new CANSparkFlex(24, MotorType.kBrushless);
   XboxController CONTROLLER = new XboxController(0);
 
   double shooterSpeed = 60;
@@ -32,13 +32,17 @@ public class Robot extends TimedRobot {
     shooterSpeed = SmartDashboard.getNumber("ShooterSpeed", shooterSpeed);
     hopperSpeed = SmartDashboard.getNumber("HopperSpeed", hopperSpeed);
     if (CONTROLLER.getAButton()) {
-      shooter_21.setVoltage(shooterSpeed / 100 * 12);
+      shooter_21.setVoltage(-shooterSpeed / 100 * 12);
       shooter_22.setVoltage(shooterSpeed / 100 * 12);
-      hopper_23.setVoltage(hopperSpeed / 100 * 12);
-      hopper_24.setVoltage(hopperSpeed / 100 * 12);
     } else {
       shooter_21.setVoltage(0);
       shooter_22.setVoltage(0);
+    }
+
+    if (CONTROLLER.getBButton()) {
+      hopper_23.setVoltage(-hopperSpeed / 100 * 12);
+      hopper_24.setVoltage(hopperSpeed / 100 * 12);
+    } else {
       hopper_23.setVoltage(0);
       hopper_24.setVoltage(0);
     }
